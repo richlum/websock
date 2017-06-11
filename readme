@@ -1,0 +1,35 @@
+https://devcenter.heroku.com/articles/ssl-certificate-self
+
+openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+	create a server secret key
+
+openssl rsa -passin pass:x -in server.pass.key -out server.key
+	encrypt the server key
+
+openssl req -new -key server.key -out server.csr
+	create a server certificate signing request.
+	this cmd will ask a bunch of config questions that identify your server
+
+
+openssl x509 -req -sha256 -days 365 -in server.csr server.key -out server.crt
+	create the server certificate that the site will server up to callers
+	it will be signed by the server.key
+
+client will complain as it reconginizes self signed certificate.
+rejectUnauthorized : false to allow.
+
+some releveant discussion and possible other related knobs/swithces
+https://github.com/request/request/issues/418
+
+
+Todo:
+create own self signed certificate authority and install the certifite 
+authority in both server and client so that we can securely validate
+web server to client and client to server using same self generated
+CA.
+
+see https://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/
+
+
+
+
