@@ -17,7 +17,9 @@ var httpServ = (ws_cfg.ssl) ? require('https') : require('http');
 var app = httpServ.createServer({
 	key: fs.readFileSync(ws_cfg.ssl_key),
 	cert: fs.readFileSync(ws_cfg.ssl_cert),
-	ca: fs.readFileSync(ws_cfg.ca)
+	ca: fs.readFileSync(ws_cfg.ca),
+	requestCert: true,      // ask for client certificate
+	rejectUnauthorized: true // dont allow unless we get a valid client cert
 }, function(req, res) {
 	console.log("request received")
 }).listen(ws_cfg.port);

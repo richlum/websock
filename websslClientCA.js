@@ -1,8 +1,9 @@
 const WebSocket = require('ws')
 const fs = require('fs')
 const ws = new WebSocket('wss://localhost:8001/',  // wss is secure version of ws
-	{	ca: fs.readFileSync("./ca/ca-crt.pem")  
-		//rejectUnauthorized: false
+	{	ca: fs.readFileSync("./ca/ca-crt.pem") ,
+		key: fs.readFileSync("./ca/client/client1-key.pem"),
+		cert: fs.readFileSync("./ca/client/client1-crt.pem") 
 	} )
 
 ws.on('open', function open() {
